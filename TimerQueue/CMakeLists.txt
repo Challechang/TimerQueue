@@ -17,8 +17,8 @@ set(SOURCE_FILES                                            #源代码文件
     Logger/LogStream.cpp
     Logger/TimeStamp.cpp
     )
-add_library(timer SHARED ${SOURCE_FILES})
-target_link_libraries(timer pthread)
+add_library(timerqueue SHARED ${SOURCE_FILES})
+target_link_libraries(timerqueue pthread)
 ###
 # includes
 ###
@@ -35,4 +35,4 @@ include_directories(${LOGGER_INCLUDES} ${PROJECT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 
 add_executable(timer_queue_test timer_queue_test.cpp)
-target_link_libraries(timer_queue_test timer)
+target_link_libraries(timer_queue_test timerqueue)
