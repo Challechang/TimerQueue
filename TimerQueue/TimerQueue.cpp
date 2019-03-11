@@ -184,7 +184,7 @@ void TimerQueue::cancel(TimerId timerId)
 void TimerQueue::cancelInLoop(TimerId timerId)
 {
   p_loop->assertInLoopThread();
-  assert(m_timers.size() ==  m_activeTimers.size());
+//  assert(m_timers.size() ==  m_activeTimers.size());
   ActiveTimer timer(timerId.m_timer, timerId.m_sequence);
   ActiveTimerSet::iterator it = m_activeTimers.find(timer);
   if(it != m_activeTimers.end())
