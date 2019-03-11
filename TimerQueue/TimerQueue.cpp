@@ -203,7 +203,7 @@ void TimerQueue::cancelInLoop(TimerId timerId)
 bool TimerQueue::insert(Timer* timer)
 {
   p_loop->assertInLoopThread();
-  assert(m_timers.size() == m_activeTimers.size());
+//  assert(m_timers.size() == m_activeTimers.size());
   bool earliestChanged = false;
   TimeStamp when = timer->expiration();
   TimerList::iterator it = m_timers.begin();
