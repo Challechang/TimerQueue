@@ -151,7 +151,7 @@ std::vector<TimerQueue::Entry> TimerQueue::getExpired(TimeStamp now)
     assert(n == 1); (void)n;
   }
 
-  assert(m_timers.size() == m_activeTimers.size());
+//  assert(m_timers.size() == m_activeTimers.size());
 
   return expired;
 }
@@ -197,7 +197,7 @@ void TimerQueue::cancelInLoop(TimerId timerId)
   {
     m_cancelingTimers.insert(timer);
   }
-  assert(m_timers.size() == m_activeTimers.size());
+//  assert(m_timers.size() == m_activeTimers.size());
 }
 
 bool TimerQueue::insert(Timer* timer)
@@ -225,7 +225,7 @@ bool TimerQueue::insert(Timer* timer)
   LOG_TRACE << "TimerQueue::insert() " << "m_timers.size() : "
   << m_timers.size() << " m_activeTimers.size() : " << m_activeTimers.size();
 
-  assert(m_timers.size() == m_activeTimers.size());
+//  assert(m_timers.size() == m_activeTimers.size());
   return earliestChanged;
 }
 
