@@ -113,7 +113,9 @@ TimerQueue::~TimerQueue()
 
 void TimerQueue::Start()
 {
-  assert(!m_started);
+  if (m_started) {
+      return;
+  }
   m_started = true;
   bool b_inited = false;;
 
