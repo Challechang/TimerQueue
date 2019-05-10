@@ -4,105 +4,108 @@
 #include <string.h>
 #include <string>
 
-const int kSmallBuffer = 4096;
-const int kLargeBuffer = 4096*1000;
+namespace timer {
 
-template<int SIZE>
-class LogBuffer
-{
-public:
-	LogBuffer(): m_cur(m_data){
-	}
+    const int kSmallBuffer = 4096;
+    const int kLargeBuffer = 4096*1000;
 
-	~LogBuffer(){
-		//printf("%s", m_data);
-	}
+    template<int SIZE>
+    class LogBuffer
+    {
+    public:
+        LogBuffer(): m_cur(m_data){
+        }
 
-	void append(const char* /*restrict*/ buf, size_t len){
-	// append partially
-		if (/*implicit_cast<size_t>*/(avail()) > len)
-		{
-			memcpy(m_cur, buf, len);
-			m_cur += len;
-		}
-	}
+        ~LogBuffer(){
+            //printf("%s", m_data);
+        }
 
-	// write in m_data directly
-	char* current() {  return m_cur; };
-	size_t avail() const { return static_cast<int> (end() - m_cur); }
-	void add(size_t len) { m_cur += len; }
-	int length() const {return m_cur - m_data;}
-	void bzero() { ::bzero(m_data, sizeof(m_data)); }
-	void reset() {m_cur = m_data;}
+        void append(const char* /*restrict*/ buf, size_t len){
+            // append partially
+            if (/*implicit_cast<size_t>*/(avail()) > len)
+            {
+                memcpy(m_cur, buf, len);
+                m_cur += len;
+            }
+        }
 
-	const char* data() const { return m_data; }
+        // write in m_data directly
+        char* current() {  return m_cur; };
+        size_t avail() const { return static_cast<int> (end() - m_cur); }
+        void add(size_t len) { m_cur += len; }
+        int length() const {return m_cur - m_data;}
+        void bzero() { ::bzero(m_data, sizeof(m_data)); }
+        void reset() {m_cur = m_data;}
 
-private:
-	const char* end() const { return m_data + sizeof(m_data); }
+        const char* data() const { return m_data; }
 
-	char m_data[SIZE];
-	char* m_cur;
-};
+    private:
+        const char* end() const { return m_data + sizeof(m_data); }
 
-class LogStream{
-public:
-	LogStream();
-	~LogStream();
+        char m_data[SIZE];
+        char* m_cur;
+    };
 
-	typedef LogBuffer<kSmallBuffer> Buffer;
-	typedef LogStream self;
-	self& operator<<(bool v);
+    class LogStream{
+    public:
+        LogStream();
+        ~LogStream();
 
-	self& operator<<(short);
-	self& operator<<(unsigned short);
-	self& operator<<(int);
-	self& operator<<(unsigned int);
-	self& operator<<(long);
-	self& operator<<(unsigned long);
-	self& operator<<(long long);
-	self& operator<<(unsigned long long);
+        typedef LogBuffer<kSmallBuffer> Buffer;
+        typedef LogStream self;
+        self& operator<<(bool v);
 
-	self& operator<<(const void*);
+        self& operator<<(short);
+        self& operator<<(unsigned short);
+        self& operator<<(int);
+        self& operator<<(unsigned int);
+        self& operator<<(long);
+        self& operator<<(unsigned long);
+        self& operator<<(long long);
+        self& operator<<(unsigned long long);
 
-	self& operator<<(float v);
-	self& operator<<(double);
+        self& operator<<(const void*);
 
-	self& operator<<(char v);
-	self& operator<<(const char *);
+        self& operator<<(float v);
+        self& operator<<(double);
 
-	self& operator<<(const std::string& s);
+        self& operator<<(char v);
+        self& operator<<(const char *);
 
-	void append(const char* data, int len) { return m_buffer.append(data, len); }
-	const Buffer& buffer() const { return m_buffer; }
+        self& operator<<(const std::string& s);
 
-private:
-	LogStream(const LogStream& ls);			//no copyable
-	LogStream& operator=(const LogStream& ls);
+        void append(const char* data, int len) { return m_buffer.append(data, len); }
+        const Buffer& buffer() const { return m_buffer; }
 
-	template<typename T>
-	void formatInteger(T v);
+    private:
+        LogStream(const LogStream& ls);			//no copyable
+        LogStream& operator=(const LogStream& ls);
 
-	Buffer m_buffer;
-	static const int kMaxNumericSize = 32;
+        template<typename T>
+        void formatInteger(T v);
 
-};
+        Buffer m_buffer;
+        static const int kMaxNumericSize = 32;
 
-class Fmt{
-public:
-	template<typename T>
-	Fmt(const char* fmt, T val);
+    };
 
-	const char* data() const { return m_buf; }
-	int length() const { return m_length; }
+    class Fmt{
+    public:
+        template<typename T>
+        Fmt(const char* fmt, T val);
 
-private:
-	char m_buf[32];
-	int m_length;
-};
+        const char* data() const { return m_buf; }
+        int length() const { return m_length; }
 
-inline LogStream& operator<<(LogStream &s, const Fmt& fmt){
-	s.append(fmt.data(), fmt.length());
-	return s;
+    private:
+        char m_buf[32];
+        int m_length;
+    };
+
+    inline LogStream& operator<<(LogStream &s, const Fmt& fmt){
+        s.append(fmt.data(), fmt.length());
+        return s;
+    }
 }
 
 #endif
