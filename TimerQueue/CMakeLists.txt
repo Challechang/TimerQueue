@@ -33,5 +33,5 @@ include_directories(${LOGGER_INCLUDES} ${PROJECT_SOURCE_DIR})
 ###
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 
-add_executable(timer_queue_test timer_queue_test.cpp)
-target_link_libraries(timer_queue_test timerqueue)
+#add_executable(timer_queue_test timer_queue_test.cpp)
+#target_link_libraries(timer_queue_test timerqueue)
